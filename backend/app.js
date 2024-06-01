@@ -1,37 +1,23 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-
-// dot env config
+const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const path = require("path");
+// router
+const authRouter = require("./routes/authRoute");
 
-// csrf token set up
-const csrf = require("csurf");
-const csrfProtect = csrf();
-
+//controller
+const errorController = require("./controllers/errorController");
 const app = express();
 
-app.use(express.static(path.join(__dirname, "public")));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
+app.use(bodyParser.json());
 
-// csrf setup
-app.use(csrfProtect);
-app.use((req, res, next) => {
-  res.locals.csrfToken = req.csrfToken();
-  next();
-});
+app.use("/api/auth", authRouter);
 
-// for 404 routes
-app.all("*", (req, res) => {
-  return res.send("404");
-});
-
-// to handel errors
-// app.use();
-
+app.use(errorController);
 const PORT = process.env.PORT || 3000;
 
 mongoose
