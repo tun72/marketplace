@@ -73,13 +73,28 @@ exports.login = catchAsync(async (req, res, next) => {
     // throw new Error("Invalid password.");
   }
 
-  const token = jwt.sign({ userId: oldUser._id }, process.env.SECRECT, {
+  const token = jwt.sign({ userId: oldUser._id }, process.env.SECRET, {
     expiresIn: "1h",
   });
   return res.status(200).json({
     isSuccess: true,
     message: "Successfully Login ✅",
-    userId: oldUser._id,
+    user: {
+      email: oldUser.email,
+      name: oldUser.name,
+      userId: oldUser._id,
+    },
     token,
+  });
+});
+
+exports.checkUser = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  if (!user) throw new error("Error Occour! No User");
+
+  return res.status(200).json({
+    isSuccess: true,
+    message: "User is authorized",
+    user,
   });
 });

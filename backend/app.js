@@ -7,6 +7,7 @@ dotenv.config();
 
 // router
 const authRouter = require("./routes/authRoute");
+const productRouter = require("./routes/productRoute");
 
 //controller
 const errorController = require("./controllers/errorController");
@@ -16,7 +17,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use("/api/auth", authRouter);
-
+app.use("/api/product", productRouter);
 app.use(errorController);
 const PORT = process.env.PORT || 3000;
 

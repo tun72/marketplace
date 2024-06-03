@@ -1,11 +1,14 @@
 import { Form, Input, message } from "antd";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login, register } from "../services/apiUser";
+import { login, register } from "../../services/apiUser";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/slices/userSlice";
 
 export default function AuthForm({ isLogin }) {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   async function handelFinish(values) {
     try {
       setIsLoading(true);
@@ -21,23 +24,25 @@ export default function AuthForm({ isLogin }) {
       }
 
       if (data.isSuccess) {
+        console.log(data.user);
+        dispatch(setUser(data.user));
         message.success(data.message);
+
         navigate(render);
       }
     } catch (err) {
-      console.log(err.response.data.message);
-      message.error(err.response.data.message);
+      message.error(err?.response?.data?.message || err.message);
     } finally {
       setIsLoading(false);
     }
   }
   return (
-    <section className="w-full h-[100vh] py-[10rem]">
-      <h2 className="text-center text-2xl text-sky-600 font-bold">
+    <section className="w-full py-4">
+      <h2 className="text-center text-2xl text-blue-500 font-bold">
         {isLogin ? "Login Your Account" : "Register New Account"}
       </h2>
       <Form
-        className="max-w-3xl mx-auto mt-4"
+        className="max-w-2xl mx-auto mt-4"
         onFinish={handelFinish}
         name="validateOnly"
         layout="vertical"
@@ -87,7 +92,7 @@ export default function AuthForm({ isLogin }) {
         <Form.Item>
           <button
             type="submit"
-            className="bg-sky-600 shadow-md w-full text-lg font-bold rounded-md text-white px-2 py-2"
+            className="bg-blue-500 shadow-md w-full text-lg font-bold rounded-md text-white px-2 py-2"
           >
             {isLoading ? "Loading..." : isLogin ? "Login" : "Register"}
           </button>
@@ -97,7 +102,7 @@ export default function AuthForm({ isLogin }) {
           <p className="text-base">
             Don't have an account?
             <Link
-              className="text-sky-600"
+              className="text-blue-500"
               to={`${!isLogin ? "/login" : "/register"}`}
             >
               {!isLogin ? "login" : "register now"}
