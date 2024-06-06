@@ -7,9 +7,20 @@ import {
 } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import ProductManage from "./ProductManage";
+import Products from "./Products";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getProducts,
+  reset,
+  updateTabKey,
+} from "../../store/slices/productSlice";
+
 function Index() {
-  const [activeTabKey, setActiveTabKey] = useState("1");
+  const { activeTabKey, editProductId } = useSelector(getProducts);
+  const dispatch = useDispatch();
   const [manageTabKey, setManageTabKey] = useState("1");
+
+  console.log(activeTabKey);
   const items = [
     {
       key: "1",
@@ -19,7 +30,7 @@ function Index() {
           Products
         </span>
       ),
-      children: <></>,
+      children: <Products activeTabKey={activeTabKey} />,
     },
     {
       key: "2",
@@ -29,7 +40,12 @@ function Index() {
           Manage Product
         </span>
       ),
-      children: <ProductManage manageTabKey={manageTabKey} />,
+      children: (
+        <ProductManage
+          manageTabKey={manageTabKey}
+          setActiveTabKey={activeTabKey}
+        />
+      ),
     },
     {
       key: "3",
@@ -54,7 +70,16 @@ function Index() {
   ];
 
   function onChangeHandler(key) {
-    setActiveTabKey(key);
+    // setActiveTabKey(key);
+
+    if (editProductId && activeTabKey === "2") {
+      const sure = window.confirm("Are You Sure?");
+      if (sure) {
+        return dispatch(reset());
+      } 
+    } else {
+      return dispatch(updateTabKey(key));
+    }
   }
   return (
     <section>

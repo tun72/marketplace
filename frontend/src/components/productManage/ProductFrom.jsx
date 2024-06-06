@@ -4,12 +4,26 @@ import {
 } from "@heroicons/react/24/solid";
 import { Checkbox, Col, Form, Input, Row, Select, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { addProduct } from "../../services/apiProduct";
-import { useState } from "react";
+import {
+  addProduct,
+  getOldProduct,
+  updateProduct,
+} from "../../services/apiProduct";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loadProducts,
+  reset,
+  updateEditProductId,
+  updateTabKey,
+} from "../../store/slices/productSlice";
 
 function ProductFrom() {
   const [isLoading, setIsLoading] = useState(false);
-
+  const { editProductId, activeTabKey } = useSelector(
+    (state) => state.reducer.product
+  );
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
 
   const options = [
@@ -60,9 +74,18 @@ function ProductFrom() {
   async function onFinishHandler(values) {
     try {
       setIsLoading(true);
-      const data = await addProduct(values);
+      let data;
+      if (editProductId) {
+        data = await updateProduct(editProductId, values);
+      } else {
+        data = await addProduct(values);
+      }
+
       if (data.isSuccess) {
         form.resetFields();
+        dispatch(reset());
+        dispatch(loadProducts());
+
         message.success(data.message);
       }
     } catch (err) {
@@ -72,9 +95,37 @@ function ProductFrom() {
       setIsLoading(false);
     }
   }
+
+  useEffect(() => {
+    async function getOldProductData() {
+      try {
+        const data = await getOldProduct(editProductId);
+        if (data.isSuccess) {
+          message.success("Edit mode on!!");
+
+          form.setFieldsValue(data.product);
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (err) {
+        message.error(err.message);
+      }
+    }
+
+    if (editProductId) {
+      getOldProductData();
+    } else {
+      form.resetFields();
+    }
+  }, [editProductId, form]);
+
+  
+
   return (
     <section>
-      <h1 className="text-3xl font-semibold my-2">What you want to sell?</h1>
+      <h1 className="text-3xl font-semibold my-2">
+        {editProductId ? "Update Product" : "What you want to sell?"}
+      </h1>
       <Form layout="vertical" onFinish={onFinishHandler} form={form}>
         <Form.Item
           name="name"
@@ -157,7 +208,7 @@ function ProductFrom() {
           ) : (
             <>
               <SquaresPlusIcon width={30} />
-              Sell Product
+              {editProductId ? "Update Product" : " Sell Product"}
             </>
           )}
 

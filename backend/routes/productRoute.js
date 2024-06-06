@@ -8,8 +8,9 @@ const authMiddleware = require("../middlewares/authMiddleware");
 
 router
   .route("")
-  .get()
+  .get(authMiddleware.protect, productController.getProducts)
   .post(
+    authMiddleware.protect,
     [
       body("name")
         .trim()
@@ -29,8 +30,44 @@ router
         .withMessage("product usedFor must have."),
       body("details").isArray().withMessage("product details must array."),
     ],
-    authMiddleware.protect,
+
     productController.postProducts
   );
+
+router.patch(
+  "/:productId/update",
+  authMiddleware.protect,
+  [
+    body("name").trim().notEmpty().withMessage("product name must have."),
+    body("description")
+      .trim()
+      .notEmpty()
+      .withMessage("product description must have."),
+    body("price").trim().notEmpty().withMessage("product price must have."),
+    body("category")
+      .trim()
+      .notEmpty()
+      .withMessage("product category must have."),
+    body("usedFor").trim().notEmpty().withMessage("product usedFor must have."),
+    body("details").isArray().withMessage("product details must array."),
+  ],
+  productController.updateProducts
+);
+router.delete(
+  "/:productId/delete",
+  authMiddleware.protect,
+  productController.deleteProduct
+);
+
+router.get(
+  "/:productId/old-data",
+  authMiddleware.protect,
+  productController.getSingleProduct
+);
+
+router
+  .route("/:productId/images")
+  .get(authMiddleware.protect, productController.getImages)
+  .post(authMiddleware.protect, productController.uploadImages);
 
 module.exports = router;

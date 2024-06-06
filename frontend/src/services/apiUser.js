@@ -43,10 +43,7 @@ export async function register({ email, password, name }) {
 
 export async function checkUser() {
   const token = localStorage.getItem("token")
-  console.log(token);
   const response = await axios.get(`${SERVER_URL}/api/auth/check-user`, getHeader(token));
-
-  console.log(response);
 
   if (response.status !== 200) {
     throw new Error(response);
