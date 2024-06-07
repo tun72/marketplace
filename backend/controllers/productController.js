@@ -23,7 +23,6 @@ exports.getProducts = catchAsync(async (req, res, next) => {
 exports.postProducts = catchAsync(async (req, res, next) => {
   const errors = validationResult(req);
 
-  console.log(errors);
   if (!errors.isEmpty()) {
     return res.status(422).json({
       isSuccess: false,

@@ -14,7 +14,7 @@ function Nav() {
     navigate("/");
   };
   return (
-    <header className="bg-blue-50 flex items-center justify-between py-4 px-10">
+    <header className=" flex items-center justify-between py-4 px-10">
       <h1 className="text-blue-600 font-bold lg:text-2xl text-lg uppercase">
         <Link to="/">Marketplace.io</Link>
       </h1>

@@ -14,6 +14,7 @@ import {
   reset,
   updateTabKey,
 } from "../../store/slices/productSlice";
+import General from "./General";
 
 function Index() {
   const { activeTabKey, editProductId } = useSelector(getProducts);
@@ -65,7 +66,7 @@ function Index() {
           Profile
         </span>
       ),
-      children: <></>,
+      children: <General />,
     },
   ];
 

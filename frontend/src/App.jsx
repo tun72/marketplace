@@ -6,6 +6,7 @@ import Index from "./pages/home/Index";
 
 import Profile from "./pages/profile/Index";
 import AuthProvider from "./providers/AuthProvider";
+import ProductDetail from "./pages/home/ProductDetail";
 export default function App() {
   const router = createBrowserRouter([
     {
@@ -16,6 +17,10 @@ export default function App() {
           index: true,
           element: <Index />,
         },
+        {
+          path:  "/products/:productId",
+          element: <ProductDetail />
+        }, 
         {
           path: "/profile",
           element: (

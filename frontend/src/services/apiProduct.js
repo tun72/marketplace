@@ -119,3 +119,34 @@ export async function uploadImages(images, productId) {
 
   return data;
 }
+
+// bid
+
+export async function getBids(id) {
+  const response = await axios.get(`${SERVER_URL}/api/product/bids/${id}`);
+
+  if (response.status !== 200) {
+    throw new Error(200);
+  }
+
+  const data = response.data;
+
+  return data;
+}
+
+export async function placeABid(bid) {
+  const token = localStorage.getItem("token");
+  const response = await axios.post(
+    `${SERVER_URL}/api/product/place-bids`,
+    bid,
+    getHeader(token)
+  );
+
+  if (response.status !== 201) {
+    throw new Error(200);
+  }
+
+  const data = response.data;
+
+  return data;
+}
