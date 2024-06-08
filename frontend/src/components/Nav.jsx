@@ -32,9 +32,17 @@ function Nav() {
 
         {user?.userId && (
           <>
-            <li>
-              <Link to="/profile">Profile</Link>
-            </li>
+            {user?.role === "user" && (
+              <li>
+                <Link to="/profile">Profile</Link>
+              </li>
+            )}
+
+            {user?.role === "admin" && (
+              <li>
+                <Link to="/admin">Dashboard</Link>
+              </li>
+            )}
             <li>
               <button
                 to="/logout"

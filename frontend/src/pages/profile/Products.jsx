@@ -14,6 +14,8 @@ function Products() {
   const { products, isLoading } = useSelector(getProducts);
   const dispatch = useDispatch();
 
+
+
   useEffect(() => {
     dispatch(loadProducts());
 

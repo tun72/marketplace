@@ -24,10 +24,10 @@ export default function AuthForm({ isLogin }) {
       }
 
       if (data.isSuccess) {
-        console.log(data.user);
-        dispatch(setUser(data.user));
+        if (isLogin) {
+          dispatch(setUser(data.user));
+        }
         message.success(data.message);
-
         navigate(render);
       }
     } catch (err) {

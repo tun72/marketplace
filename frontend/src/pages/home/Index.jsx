@@ -42,7 +42,7 @@ function Index() {
     fetchProducts();
   }, [dispatch, page]);
 
-  function handlePagination(page) {
+  function  handlePagination(page) {
     console.log(page);
     navigate(`/?page=${page}`);
   }

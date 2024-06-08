@@ -5,11 +5,15 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
   const LIMIT_PRODUCTS = 6;
   const { page } = req.query || 1;
 
-  const products = await Product.find()
+  const products = await Product.find({
+    status: "approve",
+  })
     .skip((page - 1) * LIMIT_PRODUCTS)
     .limit(LIMIT_PRODUCTS);
 
-  const totalProducts = await Product.find().countDocuments();
+  const totalProducts = await Product.find({
+    status: "approve",
+  }).countDocuments();
 
   const totalPages = Math.ceil(totalProducts / LIMIT_PRODUCTS);
 

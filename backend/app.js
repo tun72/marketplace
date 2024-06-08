@@ -10,6 +10,7 @@ dotenv.config();
 const authRouter = require("./routes/authRoute");
 const productRouter = require("./routes/productRoute");
 const publicRouter = require("./routes/publicRoute");
+const adminRouter = require("./routes/adminRoute");
 
 //controller
 const errorController = require("./controllers/errorController");
@@ -48,6 +49,7 @@ app.use(
 app.use("/api/auth", authRouter);
 app.use("/api/product", productRouter);
 app.use("/api/public", publicRouter);
+app.use("/api/admin", adminRouter);
 app.use(errorController);
 const PORT = process.env.PORT || 3000;
 

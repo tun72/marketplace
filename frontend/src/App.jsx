@@ -7,6 +7,8 @@ import Index from "./pages/home/Index";
 import Profile from "./pages/profile/Index";
 import AuthProvider from "./providers/AuthProvider";
 import ProductDetail from "./pages/home/ProductDetail";
+import Admin from "./pages/admin/Admin";
+import { AdminProvider } from "./context/AdminContext";
 export default function App() {
   const router = createBrowserRouter([
     {
@@ -18,14 +20,22 @@ export default function App() {
           element: <Index />,
         },
         {
-          path:  "/products/:productId",
-          element: <ProductDetail />
-        }, 
+          path: "/products/:productId",
+          element: <ProductDetail />,
+        },
         {
           path: "/profile",
           element: (
             <AuthProvider>
               <Profile />
+            </AuthProvider>
+          ),
+        },
+        {
+          path: "/admin",
+          element: (
+            <AuthProvider>
+              <AdminProvider><Admin /></AdminProvider>
             </AuthProvider>
           ),
         },

@@ -83,6 +83,7 @@ exports.login = catchAsync(async (req, res, next) => {
       email: oldUser.email,
       name: oldUser.name,
       userId: oldUser._id,
+      role: oldUser.role
     },
     token,
   });
