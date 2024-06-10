@@ -6,6 +6,12 @@ import { Provider } from "react-redux";
 import store from "./store/store.js";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import { disableReactDevTools } from '@fvilers/disable-react-devtools';
+
+if (import.meta.VITE_MODE === 'production') {
+  disableReactDevTools();
+}
+
 
 const persist_store = persistStore(store);
 ReactDOM.createRoot(document.getElementById("root")).render(
