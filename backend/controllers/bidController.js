@@ -1,10 +1,13 @@
 const { validationResult } = require("express-validator");
 const Bid = require("../models/bidModel");
+const Product = require("../models/productModel");
 const catchAsync = require("../utils/catchAsync");
 
 exports.getBids = catchAsync(async (req, res, next) => {
   const { productId } = req.params;
   if (!productId) throw new Error("No product found!");
+
+
   const bids = await Bid.find({ productId })
     .populate("buyerId", "name")
     .select("text phone_number createdAt")

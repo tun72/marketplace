@@ -3,8 +3,8 @@ import AppLayout from "./pages/AppLayout";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Index from "./pages/home/Index";
-
 import Profile from "./pages/profile/Index";
+import SavedProducts from "./pages/save-products/Index";
 import AuthProvider from "./providers/AuthProvider";
 import ProductDetail from "./pages/home/ProductDetail";
 import Admin from "./pages/admin/Admin";
@@ -35,10 +35,22 @@ export default function App() {
           path: "/admin",
           element: (
             <AuthProvider>
-              <AdminProvider><Admin /></AdminProvider>
+              <AdminProvider>
+                <Admin />
+              </AdminProvider>
             </AuthProvider>
           ),
         },
+
+        {
+          path: "/saved-products",
+          element: (
+            <AuthProvider>
+              <SavedProducts />
+            </AuthProvider>
+          ),
+        },
+
         {
           path: "/login",
           element: <Login />,

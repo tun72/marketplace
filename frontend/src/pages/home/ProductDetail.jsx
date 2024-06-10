@@ -9,6 +9,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { getUser } from "../../store/slices/userSlice";
 import { formatDistanceToNow } from "date-fns";
 import { getBids, placeABid } from "../../services/apiProduct";
+import { notfiy } from "../../services/apiNotification";
+import TradeHub from "../../images/TradeHub.jpg";
 
 function ProductDetail() {
   const { isLoading } = useSelector((state) => state.reducer.loader);
@@ -73,6 +75,14 @@ function ProductDetail() {
       setIsPlaced(true);
       const data = await placeABid(bid);
       if (data.isSuccess) {
+        await notfiy({
+          title: "New bid placed.",
+          message: `New bid is placed in ${product.name} by ${user.name}.`,
+          userId: product.userId._id,
+          productId: product._id,
+          phoneNumber: values.phone,
+        });
+
         message.success(data.message);
         form.resetFields();
         fetchBids();
@@ -134,9 +144,7 @@ function ProductDetail() {
                 ) : (
                   <>
                     <img
-                      src={
-                        "https://img.freepik.com/free-vector/abstract-simple-background_53876-99863.jpg"
-                      }
+                      src={TradeHub}
                       alt={product.name}
                       className="w-full h-96 object-fill object-center rounded-xl overflow-hidden"
                     />
@@ -207,7 +215,11 @@ function ProductDetail() {
                 <h1 className="text-2xl font-semibold my-2">Place Your Bids</h1>
                 {user?.userId && user?.userId !== product.userId._id && (
                   <div className=" mb-10">
-                    <Form onFinish={onFinishHandler} layout="vertical" form={form}>
+                    <Form
+                      onFinish={onFinishHandler}
+                      layout="vertical"
+                      form={form}
+                    >
                       <Form.Item
                         name="message"
                         label="Text"

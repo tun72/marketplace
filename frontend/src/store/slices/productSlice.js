@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getProducts as getProductsAPI } from "../../services/apiProduct";
 import { message } from "antd";
+
 const initialState = {
   products: [],
   activeTabKey: "1",
@@ -15,6 +16,9 @@ const productSlice = createSlice({
   reducers: {
     addProducts: (state, action) => {
       state.products = action.payload;
+    },
+    addNotifications: (state, action) => {
+      state.notifications = action.payload;
     },
     updateTabKey: (state, action) => {
       state.activeTabKey = action.payload;
@@ -53,7 +57,6 @@ export function loadProducts() {
     try {
       const data = await getProductsAPI();
 
-      
       if (data.isSuccess) {
         dispatch({
           type: "product/addProducts",
@@ -68,8 +71,9 @@ export function loadProducts() {
   };
 }
 
+
 export const {
-  setIsLoading,
+  loading,
   updateTabKey,
   addProducts,
   updateManageTabKey,

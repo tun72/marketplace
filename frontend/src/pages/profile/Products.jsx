@@ -15,10 +15,8 @@ function Products() {
   const dispatch = useDispatch();
 
 
-
   useEffect(() => {
     dispatch(loadProducts());
-
   }, [dispatch]);
 
   function uploadHandler(id) {
@@ -27,7 +25,6 @@ function Products() {
   }
 
   function editHandler(id) {
-    
     dispatch(updateEditProductId(id, "1"));
     dispatch(updateTabKey("2"));
   }
@@ -116,6 +113,7 @@ function Products() {
                         </button>
                         <ProductDelete
                           productId={product._id}
+                          
                           fetchProducts={() => {}}
                         />
                       </td>

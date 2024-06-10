@@ -23,7 +23,6 @@ app.use(bodyParser.json());
 const storageConfigure = multer.diskStorage({
   filename: (req, file, cb) => {
     const suffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    console.log(suffix);
     cb(null, suffix + "-" + file.originalname);
   },
 });

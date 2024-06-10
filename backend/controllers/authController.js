@@ -63,9 +63,14 @@ exports.login = catchAsync(async (req, res, next) => {
     });
   }
 
+  // if (oldUser.status === "banned") {
+  //   return res.status(401).json({
+  //     message: "Your Account was Banned!",
+  //   });
+  // }
+
   const isMatch = await bcrypt.compare(password, oldUser.password);
 
-  console.log(isMatch);
   if (!isMatch) {
     return res.status(401).json({
       message: "Authentication Error! Check Email and Password !",
@@ -83,7 +88,7 @@ exports.login = catchAsync(async (req, res, next) => {
       email: oldUser.email,
       name: oldUser.name,
       userId: oldUser._id,
-      role: oldUser.role
+      role: oldUser.role,
     },
     token,
   });

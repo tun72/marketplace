@@ -5,6 +5,7 @@ const router = express.Router();
 
 const productController = require("../controllers/productController");
 const bidController = require("../controllers/bidController");
+const notificationController = require("../controllers/notificationController");
 
 const authMiddleware = require("../middlewares/authMiddleware");
 
@@ -72,6 +73,12 @@ router
   .get(authMiddleware.protect, productController.getImages)
   .post(authMiddleware.protect, productController.uploadImages);
 
+router.delete(
+  "/delete-image/:productId/:decodeImgToDelete",
+  authMiddleware.protect,
+  productController.deletePhoto
+);
+
 // Bid
 router.route("/bids/:productId").get(bidController.getBids);
 router
@@ -87,5 +94,54 @@ router
     authMiddleware.protect,
     bidController.placeBid
   );
+
+router.get(
+  "/saved-products",
+  authMiddleware.protect,
+  productController.getSavedProduct
+);
+
+router.post(
+  "/saved-products/:id",
+  authMiddleware.protect,
+  productController.savedProduct
+);
+
+router.delete(
+  "/saved-products/:id",
+  authMiddleware.protect,
+  productController.unSavedProduct
+);
+
+//  notification
+router.post(
+  "/notify",
+  authMiddleware.protect,
+  notificationController.pushNofification
+);
+
+router.get(
+  "/notifications",
+  authMiddleware.protect,
+  notificationController.getNotifications
+);
+
+router.post(
+  "/notification/:id/mark-read",
+  authMiddleware.protect,
+  notificationController.markAsRead
+);
+
+router.delete(
+  "/notification/:id/delete",
+  authMiddleware.protect,
+  notificationController.deleteNoti
+);
+
+router.delete(
+  "/notification/delete/all",
+  authMiddleware.protect,
+  notificationController.deleteAllNoti
+);
 
 module.exports = router;

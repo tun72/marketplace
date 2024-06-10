@@ -2,7 +2,11 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, reset } from "../../store/slices/productSlice";
-import { getImages, uploadImages } from "../../services/apiProduct";
+import {
+  deleteProductImage,
+  getImages,
+  uploadImages,
+} from "../../services/apiProduct";
 import { setIsLoading as setUploadLoading } from "../../store/slices/loaderSlice";
 import { message } from "antd";
 
@@ -76,6 +80,19 @@ function Upload() {
   function handelDeleteImage(id) {
     setImages((prevImages) => prevImages.filter((img) => img.id !== id));
   }
+
+  async function handelCloudImageDelete(image) {
+    setSaveImages((prev) => prev.filter((e) => e !== image));
+    try {
+      const data = await deleteProductImage(editProductId, image);
+      if (data.isSuccess) {
+        message.success("Image Successfully deleted!");
+      }
+    } catch (err) {
+      console.log(err);
+      message.error(err.message);
+    }
+  }
   return (
     <section>
       <h1 className=" text-2xl font-bold mb-4 text-blue-600">
@@ -96,7 +113,9 @@ function Upload() {
                   width={20}
                   height={20}
                   className=" absolute z-20 bottom-2 right-3 text-white cursor-pointer"
-                  onClick={() => {}}
+                  onClick={() => {
+                    handelCloudImageDelete(img);
+                  }}
                 />
               </div>
             ))}

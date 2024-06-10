@@ -1,13 +1,24 @@
 const Product = require("../models/productModel");
+
 const catchAsync = require("../utils/catchAsync");
 
 exports.getAllProducts = catchAsync(async (req, res, next) => {
   const LIMIT_PRODUCTS = 6;
+
   const { page } = req.query || 1;
 
-  const products = await Product.find({
-    status: "approve",
-  })
+  const { searchKey, category } = req.query;
+  const query = {};
+
+  if (searchKey) {
+    query.name = { $regex: searchKey, $options: "i" };
+  }
+
+  if (category) {
+    query.category = category;
+  }
+
+  let products = await Product.find(query)
     .skip((page - 1) * LIMIT_PRODUCTS)
     .limit(LIMIT_PRODUCTS);
 

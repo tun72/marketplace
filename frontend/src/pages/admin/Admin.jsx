@@ -14,9 +14,37 @@ import Products from "./Products";
 import { useAdminContext } from "../../context/AdminContext";
 import { ProductProvider } from "../../context/ProductContext";
 import { UserProvider } from "../../context/USerContext";
+import { useCallback, useEffect, useState } from "react";
+import { getAllNoti } from "../../services/apiNotification";
+import { useSelector } from "react-redux";
+import { getUser } from "../../store/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 function Admin() {
   const { activeTabKey, dispatch } = useAdminContext();
+  const [notifications, setNotifications] = useState([]);
+  const user = useSelector(getUser);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user.role !== "admin") {
+      navigate("/");
+    }
+  }, [user.role, navigate]);
+
+  const getNoti = useCallback(async function () {
+    try {
+      const response = await getAllNoti();
+      if (response.isSuccess) {
+        setNotifications(response.notiDocs);
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  }, []);
+
   const items = [
     {
       key: "1",
@@ -56,7 +84,9 @@ function Admin() {
           Notifications
         </span>
       ),
-      children: <Notification />,
+      children: (
+        <Notification notifications={notifications} getNoti={getNoti} />
+      ),
     },
     {
       key: "5",

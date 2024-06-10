@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { checkUser } from "../services/apiUser";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -9,16 +9,16 @@ import { message } from "antd";
 function AuthProvider({ children }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isAutenticated, setIsisAutenticated] = useState(false);
   useEffect(() => {
     async function checkIsLogin() {
       try {
         const data = await checkUser();
-
         if (!data.isSuccess) {
-          throw new Error("Loagin Again!");
+          throw new Error(data.message);
         }
+        setIsisAutenticated(true);
       } catch (err) {
-        // console.log(err);
         message.error("Login Again!");
         dispatch(addProducts({}));
         dispatch(updateEditProductId(null, "1"));
@@ -28,8 +28,8 @@ function AuthProvider({ children }) {
     }
     checkIsLogin();
   }, [navigate, dispatch]);
-  
-  return children;
+
+  if (isAutenticated) return children;
 }
 
 export default AuthProvider;

@@ -1,11 +1,11 @@
-import { Tabs } from "antd";
+import { Tabs, message } from "antd";
 import {
   BellAlertIcon,
   SquaresPlusIcon,
   SwatchIcon,
   UserIcon,
 } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import ProductManage from "./ProductManage";
 import Products from "./Products";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,13 +15,28 @@ import {
   updateTabKey,
 } from "../../store/slices/productSlice";
 import General from "./General";
+import Notification from "./Notification";
+import { getAllNoti } from "../../services/apiNotification";
 
 function Index() {
   const { activeTabKey, editProductId } = useSelector(getProducts);
+  const [notifications, setNotifications] = useState([]);
   const dispatch = useDispatch();
   const [manageTabKey, setManageTabKey] = useState("1");
 
-  console.log(activeTabKey);
+  const loadNotification = useCallback(async function () {
+    try {
+      const data = await getAllNoti();
+
+      if (data.isSuccess) {
+        setNotifications(data.noti);
+      }
+    } catch (e) {
+      console.log(e);
+      message.error(e.message);
+    }
+  }, []);
+
   const items = [
     {
       key: "1",
@@ -56,7 +71,12 @@ function Index() {
           Notifications
         </span>
       ),
-      children: <></>,
+      children: (
+        <Notification
+          loadNotification={loadNotification}
+          notifications={notifications}
+        />
+      ),
     },
     {
       key: "4",
@@ -77,7 +97,7 @@ function Index() {
       const sure = window.confirm("Are You Sure?");
       if (sure) {
         return dispatch(reset());
-      } 
+      }
     } else {
       return dispatch(updateTabKey(key));
     }

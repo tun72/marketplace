@@ -150,3 +150,61 @@ export async function placeABid(bid) {
 
   return data;
 }
+
+export async function getSaveProducts() {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(
+      `${SERVER_URL}/api/product/saved-products`,
+      getHeader(token)
+    );
+    if (response.status !== 200) {
+      throw new Error(200);
+    }
+    const data = response.data;
+    return data;
+  } catch (err) {
+    return []
+  }
+}
+
+export async function saveProduct(id) {
+  const token = localStorage.getItem("token");
+  const response = await axios.post(
+    `${SERVER_URL}/api/product/saved-products/${id}`,
+    {},
+    getHeader(token)
+  );
+  if (response.status !== 200) {
+    throw new Error(200);
+  }
+  const data = response.data;
+  return data;
+}
+
+export async function deleteProductImage(id, image) {
+  const token = localStorage.getItem("token");
+  const encodedURIImage = encodeURIComponent(image);
+  const response = await axios.delete(
+    `${SERVER_URL}/api/product/delete-image/${id}/${encodedURIImage}`,
+    getHeader(token)
+  );
+  if (response.status !== 200) {
+    throw new Error(200);
+  }
+  const data = response.data;
+  return data;
+}
+
+export async function unSaveProduct(id) {
+  const token = localStorage.getItem("token");
+  const response = await axios.delete(
+    `${SERVER_URL}/api/product/saved-products/${id}`,
+    getHeader(token)
+  );
+  if (response.status !== 200) {
+    throw new Error(200);
+  }
+  const data = response.data;
+  return data;
+}

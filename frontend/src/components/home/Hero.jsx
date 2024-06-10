@@ -5,23 +5,17 @@ import { message } from "antd";
 
 import { useDispatch } from "react-redux";
 import { setIsLoading } from "../../store/slices/loaderSlice";
+import { useNavigate } from "react-router-dom";
 
-const Hero = ({ setProducts, getAllProducts }) => {
+const Hero = () => {
   const [searchKey, setSearchKey] = useState("");
 
-  const dispatch = useDispatch();
-
-  const searchHandler = async () => {
+  const navigate = useNavigate();
+  const searchHandler = () => {
     if (searchKey.trim().length === 0) {
       return message.error("SearchKey must have.");
     }
-    dispatch(setIsLoading(true));
-    try {
-    } catch (err) {
-      message.error(err.message);
-    } finally {
-      dispatch(setIsLoading(false));
-    }
+    navigate("/?search=" + searchKey);
   };
 
   const clearHandler = () => {

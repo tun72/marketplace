@@ -8,6 +8,7 @@ import { useProductContext } from "../../context/ProductContext";
 function Products() {
   const {
     products,
+    isLoading,
     error,
     dispatch,
     currentPage,
@@ -46,7 +47,7 @@ function Products() {
   return (
     <section>
       <h1 className=" text-3xl font-semibold my-2">Products List</h1>
-      {pendingProducts ? (
+      {isLoading ? (
         <p className="text-blue-500 font-bold">Loading...</p>
       ) : (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">

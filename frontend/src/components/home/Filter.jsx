@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { useDispatch } from "react-redux";
 import { setIsLoading } from "../../store/slices/loaderSlice";
+import { useNavigate } from "react-router-dom";
 
 const Filter = ({ setProducts, getAllProducts }) => {
   const dispatch = useDispatch();
@@ -40,26 +41,24 @@ const Filter = ({ setProducts, getAllProducts }) => {
     },
   ];
 
-  const categoryHandler = async (i) => {
-    try {
-      dispatch(setIsLoading(true));
-    } catch (err) {
-      message.error(err.message);
-    }
-    dispatch(setIsLoading(false));
+  const navigate = useNavigate();
+  const categoryHandler = (i) => {
+    setSelectedCategory(i);
+    navigate("/?category=" + Categories[i].value);
   };
 
   const clearHandler = () => {
     setSelectedCategory("");
+    navigate("/");
   };
 
   return (
-    <div className=" flex items-center gap-3 my-8 max-w-6xl mx-auto flex-wrap justify-center">
+    <div className=" flex items-center gap-3 my-8 max-w-5xl mx-auto flex-wrap justify-center">
       {Categories.map((category, index) => (
         <p
           key={category.value}
           className={`px-2 py-1 rounded-md text-sm cursor-pointer  border border-blue-600 text-blue-600 ${
-            index === selectedCategory && "border-dashed"
+            index === selectedCategory && "border-dashed bg-blue-100"
           }`}
           onClick={() => categoryHandler(index)}
         >

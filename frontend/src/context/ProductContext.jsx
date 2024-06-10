@@ -12,13 +12,14 @@ const initialState = {
   currentPage: 1,
   totalPages: 0,
   totalProducts: 0,
-  pendingProducts: 0,
+  isLoading: false,
+ 
   error: "",
 };
 function reducer(state, action) {
   switch (action.type) {
     case "loading":
-      return { ...state, pendingProducts: action.payload };
+      return { ...state, isLoading: action.payload };
     case "rejected":
       return { ...state, error: action.payload };
     case "products/page":
@@ -36,10 +37,8 @@ function reducer(state, action) {
 }
 const ProductContext = createContext();
 export function ProductProvider({ children }) {
-  const [
-    { products, currentPage, totalProducts, pendingProducts, error },
-    dispatch,
-  ] = useReducer(reducer, initialState);
+  const [{ products, currentPage, totalProducts, isLoading, error }, dispatch] =
+    useReducer(reducer, initialState);
 
   const fetchProducts = useCallback(
     async function fetchProducts() {
@@ -63,14 +62,27 @@ export function ProductProvider({ children }) {
     [fetchProducts]
   );
 
+  function getPendingProducts() {
+    return products.filter((product) => product.status === "pending").length;
+  }
+
+  function getTotalSales() {
+    return products.reduce((prev, product) => {
+      return prev + Number(product.price);
+    }, 0);
+
+  }
+
   return (
     <ProductContext.Provider
       value={{
         products,
         currentPage,
         totalProducts,
-        pendingProducts,
+        isLoading,
         error,
+        getPendingProducts,
+        getTotalSales,
         fetchProducts,
         dispatch,
       }}
