@@ -17,7 +17,7 @@ const errorController = require("./controllers/errorController");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: "https://tradehub-io.vercel.app/" }));
 app.use(bodyParser.json());
 
 const storageConfigure = multer.diskStorage({
