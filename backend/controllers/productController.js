@@ -69,6 +69,8 @@ exports.deleteProduct = catchAsync(async (req, res, next) => {
 
   if (!product) throw new Error("ProductId is not deleted");
 
+  await SavedProduct.deleteMany({ productId: product._id });
+
   if (product.images && Array.isArray(product.images)) {
     const deletePromise = product.images.map((img) => {
       const publicId = img.substring(

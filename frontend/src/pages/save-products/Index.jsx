@@ -20,7 +20,6 @@ function Index() {
         dispatch(setIsLoading(true));
         const data = await getSaveProducts();
 
-
         console.log(data);
         if (data.isSuccess) {
           setSavedProducts(data.savedProducts);
@@ -40,7 +39,9 @@ function Index() {
   return (
     <section>
       <div className="flex justify-between my-2">
-        <h1 className="text-2xl  text-blue-600 font-bold my-4">Saved Product List</h1>
+        <h1 className="text-2xl  text-blue-600 font-bold my-4">
+          Saved Product List
+        </h1>
         <ArrowLeftIcon
           width={30}
           height={30}
