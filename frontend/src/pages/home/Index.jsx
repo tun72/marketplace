@@ -66,8 +66,8 @@ function Index() {
 
   function handlePagination(page) {
     navigate(
-      `/?page=${page} ${search ? "?search=" + search : ""} ${
-        category ? "?category=" + category : ""
+      `/?page=${page}${search ? "&search=" + search : ""}${
+        category ? "&category=" + category : ""
       }`
     );
   }
