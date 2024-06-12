@@ -8,7 +8,7 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
   const { page } = req.query || 1;
 
   const { searchKey, category } = req.query;
-  const query = {status: "approve"};
+  const query = {};
 
   if (searchKey) {
     query.name = { $regex: searchKey, $options: "i" };
@@ -18,7 +18,7 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
     query.category = category;
   }
 
-  let products = await Product.find(query)
+  let products = await Product.find({ $and: [query, { status: "approve" }] })
     .skip((page - 1) * LIMIT_PRODUCTS)
     .limit(LIMIT_PRODUCTS);
 
