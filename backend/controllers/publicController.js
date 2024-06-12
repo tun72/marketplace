@@ -8,7 +8,7 @@ exports.getAllProducts = catchAsync(async (req, res, next) => {
   const { page } = req.query || 1;
 
   const { searchKey, category } = req.query;
-  const query = {};
+  const query = {status: "approve"};
 
   if (searchKey) {
     query.name = { $regex: searchKey, $options: "i" };
