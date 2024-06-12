@@ -92,6 +92,7 @@ export default function AuthForm({ isLogin }) {
         <Form.Item>
           <button
             type="submit"
+            disabled={isLoading}
             className="bg-blue-500 shadow-md w-full text-lg font-bold rounded-md text-white px-2 py-2"
           >
             {isLoading ? "Loading..." : isLogin ? "Login" : "Register"}

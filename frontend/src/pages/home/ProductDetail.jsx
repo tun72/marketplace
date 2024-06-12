@@ -258,7 +258,10 @@ function ProductDetail() {
                         ></Input>
                       </Form.Item>
                       <div className=" text-right mb-3">
-                        <button className=" text-white font-medium text-base px-2 py-1 rounded-md bg-blue-600">
+                        <button
+                          disabled={isPlaced}
+                          className=" text-white font-medium text-base px-2 py-1 rounded-md bg-blue-600"
+                        >
                           {isPlaced && "Submitting Message ..."}
                           {!isPlaced && "Submit Message"}
                         </button>
